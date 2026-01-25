@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Finance Assistant</title>
+  <style>
+    :root {
+      --bg: #f4f1ec;
+      --panel: #fff8f0;
+      --ink: #1f1a17;
+      --accent: #c14953;
+      --accent-2: #2f5d62;
+      --muted: #6b5e57;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Georgia", "Times New Roman", serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #fff1e6 0%, #f4f1ec 45%, #ece5db 100%);
+    }
+
+    header {
+      padding: 32px 24px 12px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      margin: 0 0 8px;
+      letter-spacing: 0.02em;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 20px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    section {
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 24px var(--shadow);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    section::after {
+      content: "";
+      position: absolute;
+      inset: auto -40% -60% auto;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, rgba(193, 73, 83, 0.15), rgba(47, 93, 98, 0.1));
+      border-radius: 50%;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: var(--accent-2);
+    }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 8px;
+    }
+
+    button:hover {
+      background: #a53b44;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      font-family: inherit;
+      background: #fffdf9;
+    }
+
+    .result {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .list {
+      margin: 8px 0 0;
+      padding-left: 16px;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-block;
+      background: rgba(47, 93, 98, 0.12);
+      color: var(--accent-2);
+      padding: 4px 8px;
+      border-radius: 999px;
+      margin: 4px 4px 0 0;
+      font-size: 0.85rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 6px 4px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Finance Assistant</h1>
+    <p>Upload bank CSVs, categorize spending, and get budget insights.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Upload CSV</h2>
+      <input type="file" id="csvFile" accept=".csv" />
+      <button id="uploadBtn">Upload</button>
+      <div class="result" id="uploadResult">No file uploaded yet.</div>
+    </section>
+
+    <section>
+      <h2>Spending Summary</h2>
+      <button id="summaryBtn">Refresh Summary</button>
+      <div class="result" id="summaryResult"></div>
+    </section>
+
+    <section>
+      <h2>Budget Recommendations</h2>
+      <button id="recBtn">Generate</button>
+      <div class="result" id="recResult"></div>
+    </section>
+
+    <section>
+      <h2>Forecasting</h2>
+      <label for="forecastModel">Model</label>
+      <select id="forecastModel"></select>
+      <button id="forecastBtn">Get Forecast</button>
+      <div class="result" id="forecastResult"></div>
+    </section>
+
+    <section>
+      <h2>Backtesting</h2>
+      <button id="backtestBtn">Run Backtest</button>
+      <div class="result" id="backtestResult"></div>
+    </section>
+
+    <section>
+      <h2>Ask Insights</h2>
+      <textarea id="insightQuestion" rows="3" placeholder="Why did my spending spike in June?"></textarea>
+      <button id="insightBtn">Ask</button>
+      <div class="result" id="insightResult"></div>
+    </section>
+  </main>
+
+  <script>
+    const uploadBtn = document.getElementById("uploadBtn");
+    const summaryBtn = document.getElementById("summaryBtn");
+    const recBtn = document.getElementById("recBtn");
+    const forecastBtn = document.getElementById("forecastBtn");
+    const backtestBtn = document.getElementById("backtestBtn");
+    const insightBtn = document.getElementById("insightBtn");
+    const forecastModelSelect = document.getElementById("forecastModel");
+
+    let availableModels = [];
+
+    const modelLabels = {
+      baseline_rolling_mean: "Baseline (Rolling Mean)",
+      sarima: "SARIMA",
+      prophet: "Prophet",
+      lightgbm: "ML (LightGBM/XGBoost/HGB)",
+    };
+
+    const loadForecastModels = async () => {
+      const result = document.getElementById("forecastResult");
+      try {
+        const response = await fetch("/forecast/models");
+        const data = await response.json();
+        if (!response.ok) {
+          result.textContent = data.detail || "Failed to load models.";
+          return;
+        }
+        availableModels = Object.entries(data)
+          .filter(([key, val]) => val && key !== "xgboost")
+          .map(([key]) => key);
+        forecastModelSelect.innerHTML = availableModels
+          .map(
+            (model) =>
+              `<option value="${model}">${modelLabels[model] || model}</option>`
+          )
+          .join("");
+      } catch (err) {
+        result.textContent = "Failed to load models.";
+      }
+    };
+
+    loadForecastModels();
+
+    uploadBtn.addEventListener("click", async () => {
+      const fileInput = document.getElementById("csvFile");
+      const result = document.getElementById("uploadResult");
+      if (!fileInput.files.length) {
+        result.textContent = "Select a CSV file first.";
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      result.textContent = "Uploading...";
+      const response = await fetch("/upload", { method: "POST", body: formData });
+      const data = await response.json();
+      if (!response.ok) {
+        result.textContent = data.detail || "Upload failed.";
+        return;
+      }
+      result.textContent = `Inserted ${data.inserted} transactions.`;
+    });
+
+    summaryBtn.addEventListener("click", async () => {
+      const result = document.getElementById("summaryResult");
+      result.textContent = "Loading summary...";
+      const response = await fetch("/transactions/summary");
+      const data = await response.json();
+      if (!response.ok) {
+        result.textContent = data.detail || "Failed to load summary.";
+        return;
+      }
+      const categories = Object.entries(data.by_category || {})
+        .map(([key, val]) => `${key}: $${val.toFixed(2)}`)
+        .slice(0, 8)
+        .join(" | ");
+      result.innerHTML = `
+        <div><strong>Income:</strong> $${data.total_income.toFixed(2)}</div>
+        <div><strong>Expenses:</strong> $${data.total_expenses.toFixed(2)}</div>
+        <div><strong>Net:</strong> $${data.net.toFixed(2)}</div>
+        <div class="list">${categories || "No category data yet."}</div>
+      `;
+    });
+
+    recBtn.addEventListener("click", async () => {
+      const result = document.getElementById("recResult");
+      result.textContent = "Calculating recommendations...";
+      const model = forecastModelSelect.value || "baseline_rolling_mean";
+      const response = await fetch(`/recommendations?forecast_model=${encodeURIComponent(model)}`);
+      const data = await response.json();
+      if (!response.ok) {
+        result.textContent = data.detail || "Failed to load recommendations.";
+        return;
+      }
+      if (!data.length) {
+        result.textContent = "No recommendations yet. Upload data first.";
+        return;
+      }
+      result.innerHTML = data
+        .map(
+          (rec) =>
+            `<div class="pill">${rec.category}: $${rec.recommended_budget.toFixed(2)}</div>`
+        )
+        .join(" ");
+    });
+
+    forecastBtn.addEventListener("click", async () => {
+      const result = document.getElementById("forecastResult");
+      const model = forecastModelSelect.value || "baseline_rolling_mean";
+      result.textContent = "Fetching forecast...";
+      const response = await fetch(`/forecast?model=${encodeURIComponent(model)}&horizon=1`);
+      const data = await response.json();
+      if (!response.ok) {
+        result.textContent = data.detail || "Failed to load forecast.";
+        return;
+      }
+      const rows = (data.forecasts || [])
+        .sort((a, b) => b.yhat - a.yhat)
+        .slice(0, 10);
+      if (!rows.length) {
+        result.textContent = "No forecast data yet. Upload data first.";
+        return;
+      }
+      const table = `
+        <table>
+          <thead>
+            <tr><th>Category</th><th>Forecast</th><th>Model</th></tr>
+          </thead>
+          <tbody>
+            ${rows
+              .map(
+                (row) =>
+                  `<tr><td>${row.category}</td><td>$${row.yhat.toFixed(2)}</td><td>${row.model_used}</td></tr>`
+              )
+              .join("")}
+          </tbody>
+        </table>
+      `;
+      result.innerHTML = table;
+    });
+
+    backtestBtn.addEventListener("click", async () => {
+      const result = document.getElementById("backtestResult");
+      result.textContent = "Running backtest...";
+      const payload = {
+        models: availableModels.length ? availableModels : ["baseline_rolling_mean"],
+        top_k_categories: 10,
+        min_train_months: 6,
+      };
+      const response = await fetch("/forecast/backtest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        result.textContent = data.detail || "Failed to run backtest.";
+        return;
+      }
+      const overallRows = Object.entries(data.overall || {})
+        .map(([model, metrics]) => {
+          const mae = metrics.mae === null ? "n/a" : metrics.mae.toFixed(2);
+          const mape = metrics.mape === null ? "n/a" : (metrics.mape * 100).toFixed(1) + "%";
+          return `<tr><td>${model}</td><td>${mae}</td><td>${mape}</td></tr>`;
+        })
+        .join("");
+      const categoryRows = (data.categories || [])
+        .slice(0, 10)
+        .map((row) => {
+          const mae = row.mae === null ? "n/a" : row.mae.toFixed(2);
+          const mape = row.mape === null ? "n/a" : (row.mape * 100).toFixed(1) + "%";
+          return `<tr><td>${row.category}</td><td>${row.model_requested}</td><td>${mae}</td><td>${mape}</td></tr>`;
+        })
+        .join("");
+      result.innerHTML = `
+        <table>
+          <thead>
+            <tr><th>Model</th><th>MAE</th><th>MAPE</th></tr>
+          </thead>
+          <tbody>${overallRows}</tbody>
+        </table>
+        <table>
+          <thead>
+            <tr><th>Category</th><th>Model</th><th>MAE</th><th>MAPE</th></tr>
+          </thead>
+          <tbody>${categoryRows}</tbody>
+        </table>
+      `;
+    });
+
+    insightBtn.addEventListener("click", async () => {
+      const result = document.getElementById("insightResult");
+      const question = document.getElementById("insightQuestion").value.trim();
+      if (!question) {
+        result.textContent = "Ask a question first.";
+        return;
+      }
+      result.textContent = "Thinking...";
+      const response = await fetch("/insights/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        result.textContent = data.detail || "Failed to get insights.";
+        return;
+      }
+      result.textContent = data.summary;
+    });
+  </script>
+</body>
+</html>

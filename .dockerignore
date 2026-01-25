@@ -1,0 +1,7 @@
+.venv
+__pycache__
+.pytest_cache
+models_registry
+models
+ai_finance.db
+data

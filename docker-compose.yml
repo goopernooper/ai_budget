@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      MODELS_DIR: /data/models_registry
+      UPLOAD_DIR: /data/uploads
+      DEV_MODE: "true"
+      OPENAI_API_KEY: ${OPENAI_API_KEY-}
+    volumes:
+      - ./data:/data
+      - ./:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

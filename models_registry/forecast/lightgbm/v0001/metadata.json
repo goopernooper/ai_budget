@@ -1,0 +1,118 @@
+{
+  "created_at": "2026-01-25T20:47:16.528370",
+  "dataset_hash": "1045f2d2d0a38d26d5daf611b902decf087cf2ae79673c1e12d27d9e0b687287",
+  "params": {
+    "top_k_categories": 10,
+    "min_train_months": 6,
+    "requested_models": [
+      "baseline_rolling_mean",
+      "sarima",
+      "lightgbm"
+    ]
+  },
+  "metrics": {
+    "overall": {
+      "mae": 536.6041666666667,
+      "mape": 1.2746064554172192
+    },
+    "categories": [
+      {
+        "category": "Rent",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": 1383.94,
+        "mape": 1.0,
+        "count": 1,
+        "error": "Need at least 6 months for ML forecasting"
+      },
+      {
+        "category": "Travel",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": 631.9266666666666,
+        "mape": 2.396930157285187,
+        "count": 1,
+        "error": "Need at least 6 months for ML forecasting"
+      },
+      {
+        "category": "Health",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Utilities",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": 123.70333333333335,
+        "mape": 1.4880708929788686,
+        "count": 1,
+        "error": "Need at least 6 months for ML forecasting"
+      },
+      {
+        "category": "Groceries",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Shopping",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Transport",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Entertainment",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Dining",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Subscriptions",
+        "model_requested": "lightgbm",
+        "model_used": "baseline_rolling_mean",
+        "mae": 6.846666666666664,
+        "mape": 0.21342477140482122,
+        "count": 1,
+        "error": "Need at least 6 months for ML forecasting"
+      }
+    ],
+    "errors": [
+      "baseline_rolling_mean: Health: Not enough data for backtesting; Groceries: Not enough data for backtesting; Shopping: Not enough data for backtesting; Transport: Not enough data for backtesting; Entertainment: Not enough data for backtesting; Dining: Not enough data for backtesting",
+      "sarima: Health: Not enough data for backtesting; Groceries: Not enough data for backtesting; Shopping: Not enough data for backtesting; Transport: Not enough data for backtesting; Entertainment: Not enough data for backtesting; Dining: Not enough data for backtesting",
+      "lightgbm: Rent: Need at least 6 months for ML forecasting (used baseline_rolling_mean); Travel: Need at least 6 months for ML forecasting (used baseline_rolling_mean); Health: Not enough data for backtesting; Utilities: Need at least 6 months for ML forecasting (used baseline_rolling_mean); Groceries: Not enough data for backtesting; Shopping: Not enough data for backtesting; Transport: Not enough data for backtesting; Entertainment: Not enough data for backtesting; Dining: Not enough data for backtesting; Subscriptions: Need at least 6 months for ML forecasting (used baseline_rolling_mean)"
+    ]
+  },
+  "code_version": "unknown",
+  "python_version": "3.9.6"
+}

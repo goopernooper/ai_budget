@@ -1,0 +1,118 @@
+{
+  "created_at": "2026-01-25T20:47:16.426795",
+  "dataset_hash": "1045f2d2d0a38d26d5daf611b902decf087cf2ae79673c1e12d27d9e0b687287",
+  "params": {
+    "top_k_categories": 10,
+    "min_train_months": 6,
+    "requested_models": [
+      "baseline_rolling_mean",
+      "sarima",
+      "lightgbm"
+    ]
+  },
+  "metrics": {
+    "overall": {
+      "mae": 642.8656954698594,
+      "mape": 1.6963439484905607
+    },
+    "categories": [
+      {
+        "category": "Rent",
+        "model_requested": "sarima",
+        "model_used": "sarima",
+        "mae": 1387.1072634445982,
+        "mape": 1.0022885843639162,
+        "count": 1,
+        "error": null
+      },
+      {
+        "category": "Travel",
+        "model_requested": "sarima",
+        "model_used": "sarima",
+        "mae": 1041.9015486953854,
+        "mape": 3.951985846970814,
+        "count": 1,
+        "error": null
+      },
+      {
+        "category": "Health",
+        "model_requested": "sarima",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Utilities",
+        "model_requested": "sarima",
+        "model_used": "sarima",
+        "mae": 136.31730356770976,
+        "mape": 1.63980877622651,
+        "count": 1,
+        "error": null
+      },
+      {
+        "category": "Groceries",
+        "model_requested": "sarima",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Shopping",
+        "model_requested": "sarima",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Transport",
+        "model_requested": "sarima",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Entertainment",
+        "model_requested": "sarima",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Dining",
+        "model_requested": "sarima",
+        "model_used": "baseline_rolling_mean",
+        "mae": null,
+        "mape": null,
+        "count": 0,
+        "error": "Not enough data for backtesting"
+      },
+      {
+        "category": "Subscriptions",
+        "model_requested": "sarima",
+        "model_used": "sarima",
+        "mae": 6.136666171744157,
+        "mape": 0.1912925864010024,
+        "count": 1,
+        "error": null
+      }
+    ],
+    "errors": [
+      "baseline_rolling_mean: Health: Not enough data for backtesting; Groceries: Not enough data for backtesting; Shopping: Not enough data for backtesting; Transport: Not enough data for backtesting; Entertainment: Not enough data for backtesting; Dining: Not enough data for backtesting",
+      "sarima: Health: Not enough data for backtesting; Groceries: Not enough data for backtesting; Shopping: Not enough data for backtesting; Transport: Not enough data for backtesting; Entertainment: Not enough data for backtesting; Dining: Not enough data for backtesting",
+      "lightgbm: Rent: Need at least 6 months for ML forecasting (used baseline_rolling_mean); Travel: Need at least 6 months for ML forecasting (used baseline_rolling_mean); Health: Not enough data for backtesting; Utilities: Need at least 6 months for ML forecasting (used baseline_rolling_mean); Groceries: Not enough data for backtesting; Shopping: Not enough data for backtesting; Transport: Not enough data for backtesting; Entertainment: Not enough data for backtesting; Dining: Not enough data for backtesting; Subscriptions: Need at least 6 months for ML forecasting (used baseline_rolling_mean)"
+    ]
+  },
+  "code_version": "unknown",
+  "python_version": "3.9.6"
+}
