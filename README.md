@@ -2,7 +2,17 @@
 
 ![Demo](assets/demo.gif)
 
-AI-powered personal finance assistant for uploading bank CSVs, categorizing transactions, forecasting spending, and getting budget recommendations.
+An AI-powered personal finance assistant that turns your bank's CSV export into
+actionable insights. Upload transactions, get automatic categorization, visualize
+spending trends, forecast next month's budget, and query your finances in plain English.
+
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green?logo=fastapi)
+![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker)
+![SQLite](https://img.shields.io/badge/SQLite-lightweight-lightgrey?logo=sqlite)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+> **Live Demo:** [your-app.onrender.com](https://your-app.onrender.com) <!-- add once deployed -->
 
 ## Setup
 
