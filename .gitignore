@@ -1,11 +1,9 @@
 .venv/
+*.db
+
 ai_finance.db
 app.db
 
-__pycache__/
 *.pyc
 .pyc/
-
 __pycache__/
-*.pyc
-.pyc/

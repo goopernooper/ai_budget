@@ -4,4 +4,5 @@ __pycache__
 models_registry
 models
 ai_finance.db
+app.db
 data
