@@ -1,5 +1,7 @@
 # AI Finance Assistant
 
+![Demo](assets/demo.gif)
+
 AI-powered personal finance assistant for uploading bank CSVs, categorizing transactions, forecasting spending, and getting budget recommendations.
 
 ## Setup
