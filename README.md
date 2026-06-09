@@ -12,7 +12,7 @@ spending trends, forecast next month's budget, and query your finances in plain 
 ![SQLite](https://img.shields.io/badge/SQLite-lightweight-lightgrey?logo=sqlite)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-> **Live Demo:** [your-app.onrender.com](ai-budget-1.onrender.com) <!-- add once deployed -->
+> **Live Demo:** [ai-budget-1.onrender.com](ai-budget-1.onrender.com) <!-- add once deployed -->
 
 ## Setup
 
